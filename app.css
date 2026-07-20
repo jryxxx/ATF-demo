@@ -69,3 +69,4 @@
 @media(max-width:768px){h1{font-size:32px}.panel{padding:16px}.animation-stage{min-height:280px}.section-heading{margin:36px 0 12px}h2{font-size:22px}.qr-footer{margin-top:36px;padding-top:18px}}
 .loading-text{color:var(--muted);font-size:15px;text-align:center;padding:40px 0}button:disabled{opacity:.6;cursor:wait}
 .loading-spinner{width:40px;height:40px;border:3px solid var(--line);border-top-color:var(--acid);border-radius:50%;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+.animation-stage{position:relative}.loading-spinner{position:absolute;z-index:1}
