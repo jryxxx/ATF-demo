@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ATF · 三维重建与目标检测对抗攻击仿真平台</title>
+  <link rel="stylesheet" href="app.css">
+</head>
+
+<body>
+  <main class="shell">
+    <header>
+      <span class="eyebrow">TT3D → ATF → YOLOV3</span>
+      <h1>三维重建与目标检测对抗攻击仿真平台</h1>
+    </header>
+
+    <section class="panel controls">
+      <form id="job-form">
+        <div class="path-grid">
+          <label>
+            <span>TT3D 数据集服务器路径</span>
+            <span class="readonly-field">tank</span>
+            <small>演示版本 — 路径不可修改</small>
+          </label>
+          <label>
+            <span>训练结果服务器路径</span>
+            <span class="readonly-field">reconstruction_outputs/tank_tt3d</span>
+            <small>演示版本 — 路径不可修改</small>
+          </label>
+        </div>
+
+        <fieldset class="route-picker">
+          <legend>重建方式</legend>
+          <label class="route-card readonly-route">
+            <span><strong>读取现有训练结果</strong><small>演示版本 — 方式不可修改</small></span>
+          </label>
+        </fieldset>
+
+        <fieldset class="palette-picker">
+          <legend>迷彩方案</legend>
+          <label class="palette-card">
+            <input name="palette_type" type="radio" value="jungle" checked>
+            <span class="palette-swatch jungle-swatch"></span>
+            <span><strong>丛林迷彩</strong><small>阔叶绿 · 林下阴影 · 树皮</small></span>
+          </label>
+          <label class="palette-card">
+            <input name="palette_type" type="radio" value="desert">
+            <span class="palette-swatch desert-swatch"></span>
+            <span><strong>沙漠迷彩</strong><small>沙色 · 土色 · 暗影</small></span>
+          </label>
+          <label class="palette-card">
+            <input name="palette_type" type="radio" value="snow">
+            <span class="palette-swatch snow-swatch"></span>
+            <span><strong>雪地迷彩</strong><small>白色 · 灰色 · 暗岩</small></span>
+          </label>
+        </fieldset>
+
+        <div class="action-row">
+          <label class="resolution-field">
+            <span>ATF 分块分辨率</span>
+            <select name="block_resolution" class="resolution-select">
+              <option value="24">24 — 大块迷彩</option>
+              <option value="48" selected>48 — 中块迷彩</option>
+              <option value="72">72 — 小块迷彩</option>
+            </select>
+            <small>数值越小，迷彩块越大</small>
+          </label>
+          <button id="submit-demo" type="button">开始重建与检测</button>
+        </div>
+      </form>
+
+      <section class="dataset-preview" aria-live="polite">
+        <div class="preview-heading">
+          <div><span class="eyebrow">INPUT VIEWS</span>
+            <h2>数据集视角预览</h2>
+          </div>
+          <p id="preview-summary">tank · train 84 / val 10 / test 10 · 640×640</p>
+        </div>
+        <div id="preview-grid" class="preview-grid"></div>
+      </section>
+    </section>
+
+    <section id="results" hidden>
+      <div class="reconstruction-result">
+        <div>
+          <span class="eyebrow">TT3D RECONSTRUCTION</span>
+          <h2 id="result-title">已读取现有 TT3D 训练结果</h2>
+          <p id="result-provenance">数据：tank · 结果：reconstruction_outputs/tank_tt3d</p>
+        </div>
+        <div class="downloads">
+          <a class="download" href="assets/reconstruction/mesh_0_atf.obj" download>校正 OBJ</a>
+          <a class="download" href="assets/reconstruction/mesh_0.mtl" download>MTL</a>
+          <a class="download" href="assets/reconstruction/feat0_0.jpg" download>纹理 1</a>
+          <a class="download" href="assets/reconstruction/feat1_0.jpg" download>纹理 2</a>
+        </div>
+      </div>
+
+      <div class="section-heading">
+        <div><span class="eyebrow">360° TURNTABLE</span>
+          <h2>整车效果</h2>
+        </div>
+        <span>同步对照 · 24 帧 · 1024×512</span>
+      </div>
+      <article class="card synchronized-animation-card">
+        <div class="animation-stage comparison-animation-stage">
+          <img id="animation-comparison" alt="原始纹理与 ATF 纹理同步透明环绕动画">
+        </div>
+        <div class="animation-labels"><span>原始纹理</span><span>ATF 纹理</span></div>
+      </article>
+
+      <div class="section-heading detection-heading">
+        <div><span class="eyebrow">YOLOV3 DETECTION</span>
+          <h2>固定视角检测</h2>
+        </div>
+        <span id="detection-views-label">104 · 76 · 29（1.5× 距离）· 51</span>
+      </div>
+      <p class="presentation-note">使用 YOLOv3 进行目标检测。</p>
+      <div class="comparison-list" id="detections"></div>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body>
+
+</html>

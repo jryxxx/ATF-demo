@@ -1,0 +1,21 @@
+{
+  "palettes": [
+    "jungle",
+    "desert",
+    "snow"
+  ],
+  "resolutions": [
+    24,
+    48,
+    72
+  ],
+  "views": [
+    "data104",
+    "data76",
+    "data29",
+    "data51"
+  ],
+  "n_previews": 16,
+  "data_path": "tank",
+  "workspace_path": "reconstruction_outputs/tank_tt3d"
+}
