@@ -51,16 +51,34 @@ function makeDetectionCard(url, texture, view) {
 }
 
 function loadResults() {
+  // Loading state
+  submitBtn.disabled = true;
+  submitBtn.textContent = "加载中...";
+  results.hidden = false;
+  resultTitle.textContent = "正在加载，请稍候...";
+  animationComparison.style.opacity = "0";
+  detections.innerHTML = '<p class="loading-text">正在加载检测结果...</p>';
+
   const palette = form.querySelector("input[name=palette_type]:checked").value;
   const res = form.querySelector("select[name=block_resolution]").value;
-
   const stamp = `?t=${Date.now()}`;
 
-  // Collapse preview to save scroll distance on mobile
+  // Collapse preview to save scroll distance
   previewGrid.closest(".dataset-preview").classList.add("collapsed");
 
-  // Turntable animation
-  animationComparison.src = assetPath(palette, res, "vehicle_comparison.webp") + stamp;
+  // Preload turntable, show when ready
+  const webpUrl = assetPath(palette, res, "vehicle_comparison.webp") + stamp;
+  const preloader = new Image();
+  preloader.onload = () => {
+    animationComparison.src = webpUrl;
+    animationComparison.style.opacity = "1";
+    animationComparison.style.transition = "opacity .3s";
+  };
+  preloader.onerror = () => {
+    animationComparison.src = webpUrl;
+    animationComparison.style.opacity = "1";
+  };
+  preloader.src = webpUrl;
 
   // Detection comparisons
   const pairs = VIEWS.map((view) => {
@@ -77,8 +95,9 @@ function loadResults() {
   detections.replaceChildren(...pairs);
 
   resultTitle.textContent = `已读取现有 TT3D 训练结果 · ${palette}_${res}`;
+  submitBtn.disabled = false;
+  submitBtn.textContent = "开始重建与检测";
 
-  results.hidden = false;
   results.scrollIntoView({ behavior: "smooth" });
 }
 
