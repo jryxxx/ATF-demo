@@ -59,8 +59,8 @@ function loadResults() {
   const pairs = VIEWS.map((view) => {
     const pair = document.createElement("div");
     pair.className = "comparison-pair";
-    const origUrl = assetPath(palette, res, `detection_original_${view}.png`) + stamp;
-    const atfUrl = assetPath(palette, res, `detection_atf_${view}.png`) + stamp;
+    const origUrl = assetPath(palette, res, `detection_original_${view}.jpg`) + stamp;
+    const atfUrl = assetPath(palette, res, `detection_atf_${view}.jpg`) + stamp;
     pair.append(
       makeDetectionCard(origUrl, "原始", view),
       makeDetectionCard(atfUrl, "ATF", view),
