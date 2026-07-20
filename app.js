@@ -8,6 +8,23 @@ const resultTitle = document.querySelector("#result-title");
 
 const VIEWS = ["data104", "data76", "data29", "data51"];
 
+// Intersection Observer for lazy-loading detection images
+const io = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      const img = entry.target;
+      const src = img.dataset.src;
+      if (src) {
+        img.src = src;
+        img.removeAttribute("data-src");
+      }
+      io.unobserve(img);
+    });
+  },
+  { rootMargin: "300px" },
+);
+
 function assetPath(palette, res, file) {
   return `assets/${palette}_${res}/${file}`;
 }
@@ -33,13 +50,15 @@ function loadPreviews() {
   previewGrid.replaceChildren(...cards);
 }
 
-function makeDetectionCard(url, texture, view) {
+function makeDetectionCard(dataSrc, texture, view) {
   const card = document.createElement("article");
-  card.className = "card";
+  card.className = "card detection-card";
   const img = document.createElement("img");
-  img.src = url;
+  img.dataset.src = dataSrc;
   img.alt = `${texture}纹理 · 视角 ${view}`;
-  img.loading = "lazy";
+  // Placeholder until lazy-loaded
+  img.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='640' height='640' fill='%23141815'/%3E";
+  io.observe(img);
   const heading = document.createElement("h3");
   heading.textContent = `${texture}纹理 · 视角 ${view}`;
   card.append(img, heading);
@@ -52,10 +71,18 @@ function loadResults() {
 
   const stamp = `?t=${Date.now()}`;
 
-  // Turntable animation
-  animationComparison.src = assetPath(palette, res, "vehicle_comparison.webp") + stamp;
+  // Turntable animation — show spinner then load
+  animationComparison.classList.add("loading");
+  animationComparison.src = "";
+  const webpUrl = assetPath(palette, res, "vehicle_comparison.webp") + stamp;
+  const preload = new Image();
+  preload.onload = () => {
+    animationComparison.src = webpUrl;
+    animationComparison.classList.remove("loading");
+  };
+  preload.src = webpUrl;
 
-  // Detection comparisons
+  // Detection comparisons — lazy loaded via Intersection Observer
   const pairs = VIEWS.map((view) => {
     const pair = document.createElement("div");
     pair.className = "comparison-pair";
