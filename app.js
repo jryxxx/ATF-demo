@@ -56,6 +56,9 @@ function loadResults() {
 
   const stamp = `?t=${Date.now()}`;
 
+  // Collapse preview to save scroll distance on mobile
+  previewGrid.closest(".dataset-preview").classList.add("collapsed");
+
   // Turntable animation
   animationComparison.src = assetPath(palette, res, "vehicle_comparison.webp") + stamp;
 
