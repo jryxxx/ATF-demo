@@ -8,6 +8,10 @@ const resultTitle = document.querySelector("#result-title");
 
 const VIEWS = ["data104", "data76", "data29", "data51"];
 
+// Choose quality tier based on screen width
+const isDesktop = window.innerWidth > 768;
+const QUALITY = isDesktop ? "desktop" : "mobile";
+
 // Intersection Observer for lazy-loading detection images
 const io = new IntersectionObserver(
   (entries) => {
@@ -26,7 +30,7 @@ const io = new IntersectionObserver(
 );
 
 function assetPath(palette, res, file) {
-  return `assets/${palette}_${res}/${file}`;
+  return `assets/${QUALITY}/${palette}_${res}/${file}`;
 }
 
 function makePreviewCard(index) {
