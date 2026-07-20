@@ -55,9 +55,10 @@ function loadResults() {
   // Loading state
   submitBtn.disabled = true;
   submitBtn.textContent = "加载中...";
+  animationComparison.style.opacity = "0";
+  turntableSpinner.style.display = "";
   results.hidden = false;
   resultTitle.textContent = "正在加载，请稍候...";
-  animationComparison.style.opacity = "0";
   detections.innerHTML = '<p class="loading-text">正在加载检测结果...</p>';
 
   const palette = form.querySelector("input[name=palette_type]:checked").value;
@@ -71,13 +72,13 @@ function loadResults() {
   const webpUrl = assetPath(palette, res, "vehicle_comparison.webp") + stamp;
   const preloader = new Image();
   preloader.onload = () => {
-    turntableSpinner.remove();
+    turntableSpinner.style.display = "none";
     animationComparison.src = webpUrl;
     animationComparison.style.opacity = "1";
     animationComparison.style.transition = "opacity .3s";
   };
   preloader.onerror = () => {
-    turntableSpinner.remove();
+    turntableSpinner.style.display = "none";
     animationComparison.src = webpUrl;
     animationComparison.style.opacity = "1";
   };
