@@ -3,6 +3,7 @@ const submitBtn = document.querySelector("#submit-demo");
 const previewGrid = document.querySelector("#preview-grid");
 const results = document.querySelector("#results");
 const animationComparison = document.querySelector("#animation-comparison");
+const turntableSpinner = document.querySelector("#turntable-spinner");
 const detections = document.querySelector("#detections");
 const resultTitle = document.querySelector("#result-title");
 
@@ -70,11 +71,13 @@ function loadResults() {
   const webpUrl = assetPath(palette, res, "vehicle_comparison.webp") + stamp;
   const preloader = new Image();
   preloader.onload = () => {
+    turntableSpinner.remove();
     animationComparison.src = webpUrl;
     animationComparison.style.opacity = "1";
     animationComparison.style.transition = "opacity .3s";
   };
   preloader.onerror = () => {
+    turntableSpinner.remove();
     animationComparison.src = webpUrl;
     animationComparison.style.opacity = "1";
   };
