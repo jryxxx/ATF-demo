@@ -71,16 +71,20 @@ function loadResults() {
   // Preload turntable, show when ready
   const webpUrl = assetPath(palette, res, "vehicle_comparison.webp") + stamp;
   const preloader = new Image();
-  preloader.onload = () => {
+  const showTurntable = () => {
     turntableSpinner.style.display = "none";
     animationComparison.src = webpUrl;
     animationComparison.style.opacity = "1";
     animationComparison.style.transition = "opacity .3s";
   };
+  const t0 = Date.now();
+  preloader.onload = () => {
+    const elapsed = Date.now() - t0;
+    setTimeout(showTurntable, elapsed < 500 ? 500 - elapsed : 0);
+  };
   preloader.onerror = () => {
-    turntableSpinner.style.display = "none";
-    animationComparison.src = webpUrl;
-    animationComparison.style.opacity = "1";
+    const elapsed = Date.now() - t0;
+    setTimeout(showTurntable, elapsed < 500 ? 500 - elapsed : 0);
   };
   preloader.src = webpUrl;
 
