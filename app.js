@@ -26,6 +26,10 @@ function assetPath(palette, res, file) {
   return `assets/${QUALITY}/${palette}_${res}/${file}`;
 }
 
+function designSheetPath(palette, res) {
+  return `assets/desktop/${palette}_${res}/atf_five_view_design.png`;
+}
+
 function makePreviewCard(index) {
   const card = document.createElement("div");
   card.className = "preview-card";
@@ -99,7 +103,7 @@ function loadResults() {
   preloader.src = webpUrl;
 
   // Orthographic five-view design sheet
-  const designSheetUrl = assetPath(palette, res, "atf_five_view_design.png");
+  const designSheetUrl = designSheetPath(palette, res);
   designSheet.style.opacity = "0";
   designSheet.removeAttribute("src");
   designSheetTitle.textContent = `${paletteLabel} ${res} 五视图设计总图`;
