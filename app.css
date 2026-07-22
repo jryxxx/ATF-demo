@@ -42,6 +42,12 @@
 .animation-labels{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line)}
 .animation-labels span{padding:14px 16px;color:var(--acid);font:700 13px ui-monospace,monospace;text-align:center}
 .animation-labels span+span{border-left:1px solid var(--line)}
+.design-sheet-heading{margin-bottom:14px}
+.design-sheet-heading .download{margin-bottom:2px}
+.design-sheet-card{background:#fff}
+.design-sheet-stage{position:relative;min-height:360px;padding:14px;overflow:auto;background:#fff}
+.design-sheet-stage img{display:block;width:100%;min-width:960px;height:auto;transition:opacity .25s}
+.missing-asset{position:absolute;inset:14px;display:grid;place-items:center;margin:0;border:1px dashed #d7b6ca;background:#fff;color:#7a425e;font-size:14px;text-align:center}
 .presentation-note{margin:-4px 0 18px;padding:12px 14px;border-left:3px solid var(--orange);background:#191713;color:#c9b9a7;font-size:13px}
 @media(max-width:800px){form{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.section-heading{align-items:start;gap:12px;flex-direction:column}.shell{padding-top:38px}}
 

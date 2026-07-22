@@ -4,10 +4,19 @@ const previewGrid = document.querySelector("#preview-grid");
 const results = document.querySelector("#results");
 const animationComparison = document.querySelector("#animation-comparison");
 const turntableSpinner = document.querySelector("#turntable-spinner");
+const designSheet = document.querySelector("#design-sheet");
+const designSheetTitle = document.querySelector("#design-sheet-title");
+const designSheetDownload = document.querySelector("#design-sheet-download");
+const designSheetMissing = document.querySelector("#design-sheet-missing");
 const detections = document.querySelector("#detections");
 const resultTitle = document.querySelector("#result-title");
 
 const VIEWS = ["data104", "data76", "data29", "data51"];
+const PALETTE_LABELS = {
+  jungle: "丛林迷彩",
+  desert: "沙漠迷彩",
+  snow: "雪地迷彩",
+};
 
 // Choose quality tier based on screen width
 const isDesktop = window.innerWidth > 768;
@@ -64,6 +73,7 @@ function loadResults() {
   const palette = form.querySelector("input[name=palette_type]:checked").value;
   const res = form.querySelector("select[name=block_resolution]").value;
   const stamp = `?t=${Date.now()}`;
+  const paletteLabel = PALETTE_LABELS[palette] || palette;
 
   // Collapse preview to save scroll distance
   previewGrid.closest(".dataset-preview").classList.add("collapsed");
@@ -87,6 +97,28 @@ function loadResults() {
     setTimeout(showTurntable, elapsed < 500 ? 500 - elapsed : 0);
   };
   preloader.src = webpUrl;
+
+  // Orthographic five-view design sheet
+  const designSheetUrl = assetPath(palette, res, "atf_five_view_design.png");
+  designSheet.style.opacity = "0";
+  designSheet.removeAttribute("src");
+  designSheetTitle.textContent = `${paletteLabel} ${res} 五视图设计总图`;
+  designSheet.alt = `${paletteLabel} ${res} 正交五视图设计总图`;
+  designSheetDownload.href = designSheetUrl;
+  designSheetDownload.download = `${palette}_${res}_atf_five_view_design.png`;
+  designSheetDownload.hidden = true;
+  designSheetMissing.hidden = true;
+  designSheet.onload = () => {
+    designSheetMissing.hidden = true;
+    designSheetDownload.hidden = false;
+    designSheet.style.opacity = "1";
+  };
+  designSheet.onerror = () => {
+    designSheet.style.opacity = "0";
+    designSheetDownload.hidden = true;
+    designSheetMissing.hidden = false;
+  };
+  designSheet.src = designSheetUrl + stamp;
 
   // Detection comparisons
   const pairs = VIEWS.map((view) => {

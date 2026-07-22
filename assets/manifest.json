@@ -15,6 +15,7 @@
     "data29",
     "data51"
   ],
+  "design_sheet": "atf_five_view_design.png",
   "n_previews": 16,
   "data_path": "tank",
   "workspace_path": "reconstruction_outputs/tank_tt3d"
