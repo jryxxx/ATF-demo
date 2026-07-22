@@ -5,6 +5,7 @@ const results = document.querySelector("#results");
 const animationComparison = document.querySelector("#animation-comparison");
 const turntableSpinner = document.querySelector("#turntable-spinner");
 const designSheet = document.querySelector("#design-sheet");
+const designSheetSpinner = document.querySelector("#design-sheet-spinner");
 const designSheetTitle = document.querySelector("#design-sheet-title");
 const designSheetDownload = document.querySelector("#design-sheet-download");
 const designSheetMissing = document.querySelector("#design-sheet-missing");
@@ -106,6 +107,8 @@ function loadResults() {
   const designSheetUrl = designSheetPath(palette, res);
   designSheet.style.opacity = "0";
   designSheet.removeAttribute("src");
+  designSheet.closest(".design-sheet-stage").classList.add("is-loading");
+  designSheetSpinner.style.display = "";
   designSheetTitle.textContent = `${paletteLabel} ${res} 五视图设计总图`;
   designSheet.alt = `${paletteLabel} ${res} 正交五视图设计总图`;
   designSheetDownload.href = designSheetUrl;
@@ -113,11 +116,15 @@ function loadResults() {
   designSheetDownload.hidden = true;
   designSheetMissing.hidden = true;
   designSheet.onload = () => {
+    designSheet.closest(".design-sheet-stage").classList.remove("is-loading");
+    designSheetSpinner.style.display = "none";
     designSheetMissing.hidden = true;
     designSheetDownload.hidden = false;
     designSheet.style.opacity = "1";
   };
   designSheet.onerror = () => {
+    designSheet.closest(".design-sheet-stage").classList.remove("is-loading");
+    designSheetSpinner.style.display = "none";
     designSheet.style.opacity = "0";
     designSheetDownload.hidden = true;
     designSheetMissing.hidden = false;
